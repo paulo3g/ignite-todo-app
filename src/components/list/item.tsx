@@ -1,19 +1,35 @@
-import { Trash } from '@phosphor-icons/react';
+import { Check, Trash } from '@phosphor-icons/react';
 import styles from './item.module.css';
 
-export default function Item() {
+import { Tasks } from '../../app';
+
+interface ItemProps {
+  data: Tasks;
+  onToggleTask: (id: number, value: boolean) => void;
+  onDeleteTask: (id: number) => void;
+}
+
+export default function Item({ data, onToggleTask, onDeleteTask }: ItemProps) {
+  const checkboxCheckedClassName = data.isChecked && styles.checkboxChecked;
+  const paragraphCheckedClassName = data.isChecked && styles.paragraphChecked;
+
   return (
     <div className={styles.container}>
-      <label htmlFor="">
-        <input type="checkbox" readOnly />
-        <span className={styles.checkbox}></span>
+      <label>
+        <input type="checkbox" readOnly checked={data.isChecked} />
+        <span
+          className={`${styles.checkbox} ${checkboxCheckedClassName}`}
+          onClick={() => onToggleTask(data.id, !data.isChecked)}
+        >
+          {data.isChecked && <Check size={14} />}
+        </span>
 
-        <p className={styles.paragraph}>
-          Integer urna interdum massa libero auctor neque turpis turpis semper. Duis vel sed fames integer.
+        <p className={`${styles.paragraph} ${paragraphCheckedClassName}`}>
+          {data.text}
         </p>
       </label>
 
-      <button>
+      <button onClick={() => onDeleteTask(data.id)}>
         <Trash size={18} color='#808080' />
       </button>
     </div>
