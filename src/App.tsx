@@ -1,35 +1,48 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import { PlusCircle } from '@phosphor-icons/react';
+
+import Header from './components/header';
+import ListHeader from './components/list/header';
+import Empty from './components/list/empty';
+import Item from './components/list/item';
+
+import './global.css';
+
+import styles from './app.module.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [tasks, setTasks] = useState([1,2,3]);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <main>
+      <Header/>
+
+      <section className={styles.content}>
+        <div className={styles.taskInfoContainer}>
+          <input placeholder='Adicione uma nova tarefa'/>
+
+          <button>
+            Criar
+            <PlusCircle size={17} color='#f2f2f2' weight='bold' />
+          </button>
+        </div>
+
+        <div className={styles.taskList}>
+          <ListHeader/>
+
+          {tasks.length > 0 ? (
+            <div>
+              {tasks.map((task) => (
+                <Item />
+              ))}
+            </div>
+          ) : (
+            <Empty/>
+          )}
+        </div>
+      </section>
+    </main>
+  );
 }
 
 export default App
